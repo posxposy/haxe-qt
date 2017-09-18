@@ -1,0 +1,10 @@
+-cp src
+-main Main
+-cpp ./bin/win
+
+-D HXCPP_CPP11
+-D HXCPP_M64
+#-D HXCPP_VERBOSE
+
+-D no_console
+-D windows
