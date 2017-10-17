@@ -1,9 +1,11 @@
 package sample;
+import cpp.Pointer;
 import qt.core.QFont.Font;
 import qt.widgets.QApplication.Application;
 import qt.widgets.QLabel.Label;
 import qt.widgets.QMainWindow.MainWindow;
 import qt.widgets.QMenu.Menu;
+import qt.widgets.QPushButton;
 import qt.widgets.QPushButton.PushButton;
 import qt.widgets.QWidget.Widget;
 
@@ -67,6 +69,10 @@ class Sample
         btn.setGeometry(100, 100, 100, 50);
         btn.setParent(window);
         
+        //weird untyped stuff for signal and slot:
+        var _btn:Pointer<QPushButton> = @:privateAccess btn.ref.reinterpret();
+        untyped __cpp__ ('QObject::connect(_btn->ptr, &QPushButton::clicked, [=](){  this->clickHandler(); })');
+        
         var font:Font = new Font();
         font.setBold(true);
         font.setPointSize(25);
@@ -78,5 +84,10 @@ class Sample
         
         window.show();
         app.exec();
+    }
+    
+    public function clickHandler():Void
+    {
+        trace("I'm a slot.");
     }
 }
