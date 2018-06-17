@@ -1,4 +1,4 @@
-package sample;
+package;
 import qt.widgets.Widget;
 import qt.widgets.Application;
 import qt.widgets.MainWindow;
@@ -7,20 +7,11 @@ import qt.widgets.PushButton;
 import qt.widgets.Label;
 import qt.core.Font;
 
-/**
- * ...
- * @author Dmitry Hryppa	http://themozokteam.com/
- */
-
+//set path tto your Qt folder
 @:build(qt.HxQt.setup("E:/SDKs/QT/5.9/msvc2017_64", ["Qt5Core", "Qt5Widgets" , "Qt5Gui"]))
-@:unreflective
-class Sample {
-    private var app:Application;
-    private var mainWindow:MainWindow;
-    private var fileMenu:Menu;
-    
-    public function new() {
-        app = new Application();
+class Main {
+    public static function main():Void {
+        var app:Application = new Application();
         app.setStyleSheet('
             QWidget#mywidget {
                 background: #ffffff;
@@ -40,12 +31,12 @@ class Sample {
             }
         ');
 
-        mainWindow = new MainWindow();
+        var mainWindow:MainWindow = new MainWindow();
         mainWindow.setWindowTitle("Sample window");
         mainWindow.resize(640, 480);
         mainWindow.show();
         
-        fileMenu = mainWindow.menuBar().addMenu("File");
+        var fileMenu:Menu = mainWindow.menuBar().addMenu("File");
         fileMenu.addAction("New");
         fileMenu.addAction("Open");
         fileMenu.addSeparator();
@@ -63,8 +54,12 @@ class Sample {
         btn.setGeometry(100, 100, 100, 50);
         btn.setParent(window);
         
+        var secondWidget:Widget = new Widget();
+        secondWidget.setWindowTitle("popup window");
+        secondWidget.resize(500, 500);
+        
         btn.clicked(function():Void {
-            trace("hello world, I'm slot!");
+            secondWidget.show();
         });
 
         var font:Font = new Font();
@@ -75,7 +70,7 @@ class Sample {
         label.setText(" Haxe is awesome!");
         label.setParent(window);
         label.setFont(font);
-        
+
         app.exec();
     }
 }

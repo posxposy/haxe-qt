@@ -1,12 +1,12 @@
--cp src
+-cp ../src
 -main Main
--cpp ./bin/win
+-cpp ./bin
 
 -D HXCPP_CPP11
 -D HXCPP_M64
 #-D HXCPP_VERBOSE
 
-#-D no_console
+-D no_console
 -D windows
 -D analyzer-optimize
 #-D no-compilation
