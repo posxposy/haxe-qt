@@ -6,5 +6,7 @@
 -D HXCPP_M64
 #-D HXCPP_VERBOSE
 
--D no_console
+#-D no_console
 -D windows
+-D analyzer-optimize
+#-D no-compilation

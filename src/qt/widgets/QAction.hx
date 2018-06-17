@@ -1,5 +1,5 @@
 package qt.widgets;
-import qt.core.QObject;
+import qt.core.Object.QObject;
 
 /**
  * ...
@@ -8,9 +8,7 @@ import qt.core.QObject;
 @:unreflective
 @:include('QtWidgets/qaction.h')
 @:native('QAction')
-extern class QAction extends QObject
-{
-    
+extern class QAction extends QObject {
     
     
 }

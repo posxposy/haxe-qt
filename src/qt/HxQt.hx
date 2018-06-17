@@ -10,10 +10,8 @@ using haxe.macro.PositionTools;
  * @author Dmitry Hryppa	http://themozokteam.com/
  */
 
-class HxQt 
-{
-    public static macro function setup(path:String, libs:Array<String>):Array<Field>
-    {
+class HxQt {
+    public static macro function setup(path:String, libs:Array<String>):Array<Field> {
         path = Path.normalize(path);
         var xmlInject:String = '
            <echo value="   _    _          __   ________             ____  _   "/>
@@ -43,5 +41,4 @@ class HxQt
         Context.getLocalClass().get().meta.add(":buildXml", [ { expr:EConst( CString( xmlInject ) ), pos:position } ], position  );
         return Context.getBuildFields();
     }
-    
 }

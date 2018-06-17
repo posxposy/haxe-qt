@@ -10,7 +10,6 @@ import cpp.RawPointer;
 @:unreflective
 @:include('QtCore/qstring.h')
 @:native('QString')
-extern class QString 
-{
+extern class QString {
     @:native('new QString') public static function create():RawPointer<QString>;
 }

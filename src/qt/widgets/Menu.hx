@@ -1,21 +1,48 @@
 package qt.widgets;
 import cpp.Pointer;
 import cpp.RawPointer;
-import qt.core.QObject.HaxeQObject;
+import cpp.Star;
+import qt.core.Object;
 import qt.core.QString;
 import qt.core.QStringTool;
-import qt.widgets.QWidget.Widget;
+import qt.widgets.Widget;
 
 /**
  * ...
  * @author Dmitry Hryppa	http://themozokteam.com/
  */
 
+class Menu extends Widget {
+    public function new() {
+        super();
+        untyped __cpp__('_ref = {0}', QMenu.create());
+    }
+
+    public static inline function fromStar(s:Star<QMenu>):Menu {
+        var m:Menu = new Menu();
+        m.destroy();
+        untyped __cpp__('{0}->_ref = s', m, s);
+        return m;
+    }
+    
+    public function addAction(text:String):Void {
+        var str:QString = QStringTool.fromString(text);
+        asMenu().addAction(str);
+    }
+    
+    public function addSeparator():Void {
+        asMenu().addSeparator();
+    }
+
+    private inline function asMenu():Star<QMenu> {
+        return untyped __cpp__('static_cast<QMenu*>(_ref)');
+    }
+}
+
 @:unreflective
 @:include('QtWidgets/qmenu.h')
 @:native('QMenu')
-extern class QMenu extends QWidget
-{
+extern class QMenu extends QWidget {
     
     @:native('new QMenu') public static function create():RawPointer<QMenu>;
     
@@ -29,26 +56,4 @@ extern class QMenu extends QWidget
     QAction *addAction(const QString &text, const QObject *receiver, const char* member, const QKeySequence &shortcut = 0);
     QAction *addAction(const QIcon &icon, const QString &text, const QObject *receiver, const char* member, const QKeySequence &shortcut = 0);
     */
-}
-
-class Menu extends Widget
-{
-    public inline function new()
-    {
-        super();
-        ref = Pointer.fromRaw(QMenu.create()).reinterpret();
-    }
-    
-    public inline function addAction(text:String):Void
-    {
-        var str:QString = QStringTool.fromString(text);
-        var p:Pointer<QMenu> = ref.reinterpret();
-        p.ptr.addAction(str);
-    }
-    
-    public inline function addSeparator():Void
-    {
-        var p:Pointer<QMenu> = ref.reinterpret();
-        p.ptr.addSeparator();
-    }
 }
