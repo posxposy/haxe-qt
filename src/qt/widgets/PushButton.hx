@@ -1,109 +1,53 @@
 package qt.widgets;
-import cpp.Callable;
-import cpp.Pointer;
-import cpp.RawPointer;
-import cpp.Reference;
-import cpp.Star;
-import qt.core.Object;
-import qt.core.QString;
-import qt.core.QStringTool;
-import qt.widgets.Widget;
 
-/**
- * ...
- * @author Dmitry Hryppa	http://themozokteam.com/
- */
+import cpp.RawPointer;
+import cpp.Star;
+import qt.core.QString;
+import qt.widgets.Widget;
+import qt.core.QStringTools;
 
 class PushButton extends Widget {
-    private var callbacks:Array<Void->Void> = [];
-    
-    public function new() {
-        super();
-        untyped __cpp__('_ref = {0}', QPushButton.create());
-        untyped __cpp__ ('
-        QObject::connect(
-            static_cast<QPushButton*>(_ref),
-            &QPushButton::clicked, [=]() {
-                {0}();
-            }
-        )', untyped clickHandler);
-    }
-    
-    public function setText(value:String):Void {
-        var str:QString = QStringTool.fromString(value);
-        asButton().setText(str);
-    }
-    
-    public function autoDefault():Bool {
-        return asButton().autoDefault();
-    }
-    
-    public function setAutoDefault(value:Bool):Void {
-        asButton().setAutoDefault(value);
-    }
-    
-    public function isDefault():Bool {
-        return asButton().isDefault();
-    }
-    
-    public function setDefault(value:Bool):Void {
-        asButton().setDefault(value);
-    }
-    
-    public function isFlat():Bool {
-        return asButton().isFlat();
-    }
-    
-    public function setFlat(value:Bool):Void {
-        asButton().setFlat(value);
-    }
-    
-    public function clicked(cb:Void->Void):Void {
-        callbacks.push(cb);
-    }
+	public var text(get, never):String;
 
-    private function clickHandler():Void {
-        for (cb in callbacks) {
-            cb();
-        }
-    }
+	public function new() {
+		untyped __cpp__('_ref = {0}', QPushButton.create());
+		super();
+	}
 
-    public override function destroy():Void {
-        super.destroy();
-        while (callbacks.length > 0) {
-            callbacks.pop();
-        }
-        callbacks = null;
-    }
+	public function setText(value:String):Void {
+		final str = QStringTools.toQtString(value);
+		asButton().setText(str);
+	}
 
-    private inline function asButton():Star<QPushButton> {
-        return untyped __cpp__('static_cast<QPushButton*>(_ref)');
-    }
+	public function clicked(cb:(checked:Bool) -> Void):Void {
+		untyped __cpp__('
+			QObject::connect(static_cast<QPushButton*>(_ref), 	&QPushButton::clicked, {0})
+		', cb);
+	}
+
+	inline function asButton():Star<QPushButton> {
+		return untyped __cpp__('static_cast<QPushButton*>({0}->_ref)', this);
+	}
+
+	function get_text():String {
+		return asButton().text().toHaxeString();
+	}
 }
 
+@:publicFields
 @:unreflective
 @:include('QtWidgets/qpushbutton.h')
 @:native('QPushButton')
-extern class QPushButton extends QWidget {
-    @:native('new QPushButton') public static function create():RawPointer<QPushButton>;
-    public function setText(value:Reference<QString>):Void;
-    
-    /* PUBLIC */
-    public function autoDefault():Bool;
-    public function setAutoDefault(value:Bool):Void;
-    public function isDefault():Bool;
-    public function setDefault(value:Bool):Void;
-    
-    public function setFlat(value:Bool):Void;
-    public function isFlat():Bool;
-    
-    /*
-    QSize sizeHint() const Q_DECL_OVERRIDE;
-    QSize minimumSizeHint() const Q_DECL_OVERRIDE;
-    
-#ifndef QT_NO_MENU
-    void setMenu(QMenu* menu);
-    QMenu* menu() const;
-#endif
-    */
+extern class QPushButton extends QAbstractButton {
+	@:native('new QPushButton')
+	static function create():RawPointer<QPushButton>;
+}
+
+@:publicFields
+@:unreflective
+@:include('QtWidgets/qabstractbutton.h')
+@:native('QAbstractButton')
+extern class QAbstractButton extends QWidget {
+	function setText(value:QString):Void;
+	function text():QString;
 }

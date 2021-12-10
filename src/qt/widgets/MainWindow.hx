@@ -1,49 +1,40 @@
 package qt.widgets;
-import cpp.Pointer;
+
+import qt.widgets.MenuBar.QMenuBar;
 import cpp.RawPointer;
-import cpp.Star;
-import qt.widgets.MenuBar;
 import qt.widgets.Widget;
+import cpp.Star;
 
-/**
- * ...
- * @author Dmitry Hryppa	http://themozokteam.com/
- */
-
-@:headerCode('
-#include <QtWidgets/qmainwindow.h>
-')
-
+@:headerCode('#include <QtWidgets/qmainwindow.h>')
 class MainWindow extends Widget {
-    public function new() {
-        super();
-        untyped __cpp__('_ref = {0}', QMainWindow.create());
-    }
-    
-    public function menuBar():MenuBar {
-        var m:MenuBar = new MenuBar();
-        m.destroy();
-        untyped __cpp__('
-        {0}->_ref = {1}
-        ', m, asMainWindow().menuBar());
-        return m;
-    }
-    
-    public function setCentralWidget(widget:Widget):Void {
-        asMainWindow().setCentralWidget(untyped  __cpp__('{0}->_ref',widget));
-    }
+	public function new() {
+		untyped __cpp__('this->_ref = {0}', QMainWindow.create());
+		super();
+	}
 
-    private inline function asMainWindow():Star<QMainWindow> {
-        return untyped __cpp__('static_cast<QMainWindow*>(_ref)');
-    }
+	public function setCentralWidget(widget:Widget):Void {
+		untyped __cpp__('static_cast<QMainWindow*>(_ref)->setCentralWidget(static_cast<QWidget*>({0}->_ref))', widget);
+	}
+
+	inline function asMainWindow():Star<QMainWindow> {
+		return untyped __cpp__('static_cast<QMainWindow*>({0}->_ref)', this);
+	}
+
+	public function menuBar():MenuBar {
+		final qMenuBar = asMainWindow().menuBar();
+		final menuBar = new MenuBar(false);
+		untyped __cpp__('{0}->_ref = {1}', menuBar, qMenuBar);
+		return menuBar;
+	}
 }
 
+@:publicFields
 @:unreflective
 @:include('QtWidgets/qmainwindow.h')
 @:native('QMainWindow')
-extern class QMainWindow extends QWidget
-{
-    @:native('new QMainWindow') public static function create():RawPointer<QMainWindow>;
-    public function menuBar():Star<QMenuBar>;
-    public function setCentralWidget(widget:Pointer<QWidget>):Void;
+extern class QMainWindow extends QWidget {
+	@:native('new QMainWindow')
+	static function create():RawPointer<QMainWindow>;
+	function menuBar():Star<QMenuBar>;
+	function setCentralWidget(widget:Star<QWidget>):Void;
 }

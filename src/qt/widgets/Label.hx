@@ -1,44 +1,39 @@
 package qt.widgets;
+
+import qt.widgets.Frame.QFrame;
 import cpp.RawPointer;
-import cpp.Reference;
 import cpp.Star;
-import qt.core.Font;
-import qt.core.Font.QFont;
 import qt.core.QString;
-import qt.core.QStringTool;
-import qt.widgets.Widget;
+import qt.gui.Font;
 
-/**
- * ...
- * @author Dmitry Hryppa	http://themozokteam.com/
- */
-class Label extends Widget {
-    public function new() {
-        super();
-        untyped __cpp__('_ref = {0}', QLabel.create());
-    }
-    
-    public function setText(value:String):Void {
-        var str:QString = QStringTool.fromString(value);
-        asLabel().setText(str);
-    }
-    
-    public function setFont(font:Font):Void {
-        untyped __cpp__('
-            static_cast<QLabel*>(_ref)->setFont({0})
-        ', @:privateAccess font.ref.ref );
-    }
+class Label extends Frame {
+	public function new() {
+		untyped __cpp__('_ref = {0}', QLabel.create());
+		super();
+	}
 
-    private inline function asLabel():Star<QLabel> {
-        return untyped __cpp__('static_cast<QLabel*>(_ref)');
-    }
+	public function setText(value:String):Void {
+		final str = value.toQtString();
+		asLabel().setText(str);
+	}
+
+	public function setFont(font:Font):Void {
+		final fontRef = @:privateAccess font.ref.ref;
+		untyped __cpp__('static_cast<QLabel*>(_ref)->setFont({0})', fontRef);
+	}
+
+	inline function asLabel():Star<QLabel> {
+		return untyped __cpp__('static_cast<QLabel*>({0}->_ref)', this);
+	}
 }
 
+@:publicFields
 @:unreflective
 @:include('QtWidgets/qlabel.h')
 @:native('QLabel')
-extern class QLabel extends QWidget {
-    @:native('new QLabel') public static function create():RawPointer<QLabel>;
-    public function setText(value:Reference<QString>):Void;
-    public function setFont(value:Reference<QFont>):Void;
+extern class QLabel extends QFrame {
+	@:native('new QLabel')
+	static function create():RawPointer<QLabel>;
+	function setText(value:QString):Void;
+	function setFont(value:QFont):Void;
 }
