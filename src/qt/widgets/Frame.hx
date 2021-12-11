@@ -1,10 +1,16 @@
 package qt.widgets;
 
 import cpp.RawPointer;
-import qt.widgets.Widget;
+import qt.widgets.Widget.QWidget;
 
 class Frame extends Widget {
 	public function new() {
+		untyped __cpp__('
+			if (_ref == nullptr) {
+				_ref = {0};
+			}
+			', QFrame.create());
+
 		super();
 	}
 }

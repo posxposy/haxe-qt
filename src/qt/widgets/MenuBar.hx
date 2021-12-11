@@ -1,10 +1,8 @@
 package qt.widgets;
 
-import cpp.Pointer;
 import cpp.RawPointer;
 import cpp.Star;
 import qt.core.QString;
-import qt.core.QStringTools;
 import qt.widgets.Menu;
 import qt.widgets.Widget;
 

@@ -1,18 +1,12 @@
 package qt.widgets;
 
-import qt.gui.Action;
-import qt.gui.Action.QAction;
-import cpp.Pointer;
 import cpp.RawPointer;
 import cpp.Star;
-import qt.core.Object;
 import qt.core.QString;
+import qt.gui.Action.QAction;
+import qt.gui.Action;
 import qt.widgets.Widget;
 
-/**
- * ...
- * @author Dmitry Hryppa	http://themozokteam.com/
- */
 class Menu extends Widget {
 	public function new(isSholdBeCreated:Bool = true) {
 		if (isSholdBeCreated) {

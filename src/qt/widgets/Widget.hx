@@ -1,5 +1,6 @@
 package qt.widgets;
 
+import qt.widgets.Layout.QLayout;
 import cpp.Finalizable;
 import cpp.Pointer;
 import cpp.RawPointer;
@@ -149,8 +150,24 @@ class Widget extends Object {
 		asWidget().showNormal();
 	}
 
+	public function setLayout(widget:Layout):Void {
+		final qLayout = @:privateAccess widget.asLayout();
+		asWidget().setLayout(qLayout);
+	}
+
 	public function setParent(parent:Widget):Void {
 		untyped __cpp__('static_cast<QWidget*>(this->_ref)->setParent(	static_cast<QWidget*>({0}->_ref))', parent);
+	}
+
+	/**
+		Adjusts the size of the widget to fit its contents.
+	 */
+	public function adjustSize():Void {
+		asWidget().adjustSize();
+	}
+
+	public function setContentsMargins(left:Int, top:Int, right:Int, bottom:Int):Void {
+		asWidget().setContentsMargins(left, top, right, bottom);
 	}
 
 	inline function asWidget():Star<QWidget> {
@@ -164,7 +181,7 @@ class Widget extends Object {
 @:native('QWidget')
 extern class QWidget extends QObject {
 	@:native('new QWidget')
-	public static function create():RawPointer<QWidget>;
+	static function create():RawPointer<QWidget>;
 
 	function close():Bool;
 	function hide():Void;
@@ -189,4 +206,7 @@ extern class QWidget extends QObject {
 	function setToolTip(value:QString):Void;
 	function setGeometry(x:Int, y:Int, width:Int, height:Int):Void;
 	function setParent(parent:Star<QWidget>):Void;
+	function setLayout(layout:Star<QLayout>):Void;
+	function adjustSize():Void;
+	function setContentsMargins(left:Int, top:Int, right:Int, bottom:Int):Void;
 }
