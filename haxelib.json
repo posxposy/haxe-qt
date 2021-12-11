@@ -1,0 +1,12 @@
+{
+  "name": "haxe-qt",
+  "url" : "https://github.com/dmitryhryppa/haxe-qt",
+  "license": "MIT",
+  "tags": ["Qt", "desktop"],
+  "description": "Experimental bindings for Qt 6",
+  "version": "0.2.0",
+  "classPath": "src/",
+  "contributors": ["dmitryhryppa"],
+  "dependencies": {
+  }
+}
