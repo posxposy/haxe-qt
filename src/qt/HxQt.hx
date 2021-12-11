@@ -7,9 +7,25 @@ import haxe.macro.Expr;
 using haxe.macro.PositionTools;
 
 class HxQt {
-	public static macro function setup(path:String, libs:Array<String>):Array<Field> {
-		final path = Path.normalize(path);
+	public static macro function setup():Array<Field> {
+		final buildFields = Context.getBuildFields();
+		final pos = Context.currentPos();
+		final defines = Context.getDefines();
+
+		if (!defines.exists('QT_PATH')) {
+			Context.fatalError('Please, provide QT_PATH define', pos);
+			return buildFields;
+		}
+
+		if (!defines.exists('QT_LIBS')) {
+			Context.fatalError('Please, provide QT_LIBS define', pos);
+			return buildFields;
+		}
+
+		final path = Path.normalize(defines.get('QT_PATH'));
+		final libs:Array<String> = defines.get('QT_LIBS').split(',');
 		final xmlInject = new StringBuf();
+
 		xmlInject.add('
 			<echo value="   _    _          __   ________             ____  _   "/>
 			<echo value="  | |  | |   /\\    \\ \\ / /  ____|           / __ \\| |  "/>
@@ -37,8 +53,8 @@ class HxQt {
 		}
 		xmlInject.add('\n</target>');
 
-		final position = Context.currentPos();
-		Context.getLocalClass().get().meta.add(":buildXml", [{expr: EConst(CString(xmlInject.toString())), pos: position}], position);
-		return Context.getBuildFields();
+		final c = Context.getLocalClass();
+		c.get().meta.add(":buildXml", [{expr: EConst(CString(xmlInject.toString())), pos: pos}], pos);
+		return buildFields;
 	}
 }
