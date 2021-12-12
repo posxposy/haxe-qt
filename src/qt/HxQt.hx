@@ -1,5 +1,6 @@
 package qt;
 
+import haxe.macro.ExprTools;
 import haxe.io.Path;
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -49,12 +50,27 @@ class HxQt {
 		');
 
 		for (libName in libs) {
-			xmlInject.add('\n<lib name="' + path + '/lib/' + libName + '.lib" />');
+			xmlInject.add('\n<lib name="$path/lib/$libName.lib" />');
 		}
 		xmlInject.add('\n</target>');
 
 		final c = Context.getLocalClass();
-		c.get().meta.add(":buildXml", [{expr: EConst(CString(xmlInject.toString())), pos: pos}], pos);
+		for (metadata in c.get().meta.get()) {
+			if (metadata.name == ':buildXml') {
+				switch metadata.params.pop().expr {
+					case EConst(c): switch c {
+							case CString(s, kind): {
+									xmlInject.add(s);
+								}
+							case _:
+						}
+					case _:
+				}
+			}
+		}
+
+		final xmlExpr = {expr: EConst(CString(xmlInject.toString())), pos: pos};
+		c.get().meta.add(":buildXml", [xmlExpr], pos);
 		return buildFields;
 	}
 }
