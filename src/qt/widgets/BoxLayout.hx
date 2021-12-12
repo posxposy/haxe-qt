@@ -17,6 +17,14 @@ class BoxLayout extends Layout {
 		untyped __cpp__('{0}->addWidget({1}, {2}, {3})', qLayout, qWidget, stretch, alignment);
 	}
 
+	public function addStretch(stretch:Int = 0):Void {
+		asBox().addStretch(stretch);
+	}
+
+	public function setStretch(index:Int, stretch:Int):Void {
+		asBox().setStretch(index, stretch);
+	}
+
 	inline function asBox():Star<QBoxLayout> {
 		return untyped __cpp__('static_cast<QBoxLayout*>({0}->_ref)', this);
 	}
@@ -27,7 +35,7 @@ class BoxLayout extends Layout {
 @:include('QtWidgets/qboxlayout.h')
 @:native('QBoxLayout')
 extern class QBoxLayout extends QLayout {
-	function addSpacing(size:Int):Void;
-	function addStretch(stretch:Int = 0):Void;
+	function addStretch(stretch:Int):Void;
 	function addWidget(widget:Star<QWidget>, stretch:Int, alignment:QAlignment):Void;
+	function setStretch(index:Int, stretch:Int):Void;
 }

@@ -16,6 +16,14 @@ class Layout extends Object {
 		untyped __cpp__('{0}->removeWidget({1})', qLayout, qWidget);
 	}
 
+	public function setContentsMargins(left:Int, top:Int, right:Int, bottom:Int):Void {
+		asLayout().setContentsMargins(left, top, right, bottom);
+	}
+
+	public function setSpacing(size:Int):Void {
+		asLayout().setSpacing(size);
+	}
+
 	inline function asLayout():Star<QLayout> {
 		return untyped __cpp__('static_cast<QLayout*>({0}->_ref)', this);
 	}
@@ -28,4 +36,6 @@ class Layout extends Object {
 extern class QLayout extends QObject {
 	function setEnabled(enable:Bool):Void;
 	function removeWidget(widget:Star<QWidget>):Void;
+	function setContentsMargins(left:Int, top:Int, right:Int, bottom:Int):Void;
+	function setSpacing(size:Int):Void;
 }

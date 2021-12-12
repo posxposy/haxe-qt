@@ -7,6 +7,7 @@
   "version": "0.2.1",
   "classPath": "src/",
   "contributors": ["dmitryhryppa"],
+  "releasenote": "See commits for details",
   "dependencies": {
   }
 }
