@@ -4,7 +4,7 @@
   "license": "MIT",
   "tags": ["Qt", "desktop"],
   "description": "Experimental bindings for Qt 6",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "classPath": "src/",
   "contributors": ["dmitryhryppa"],
   "dependencies": {
