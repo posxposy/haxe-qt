@@ -1,5 +1,6 @@
 package qt.gui;
 
+import cpp.Star;
 import cpp.RawPointer;
 import qt.core.Object.QObject;
 import qt.core.Object;
@@ -17,6 +18,14 @@ class Action extends Object {
 			QObject::connect(static_cast<QAction*>(_ref), &QAction::triggered, {0})
 		', trigger);
 	}
+
+	public function setEnabled(enabled:Bool):Void {
+		asAction().setEnabled(enabled);
+	}
+
+	inline function asAction():Star<QAction> {
+		return untyped __cpp__('static_cast<QAction*>({0}->_ref)', this);
+	}
 }
 
 @:publicFields
@@ -26,4 +35,6 @@ class Action extends Object {
 extern class QAction extends QObject {
 	@:native('new QAction')
 	static function create():RawPointer<QAction>;
+
+	function setEnabled(enabled:Bool):Void;
 }
